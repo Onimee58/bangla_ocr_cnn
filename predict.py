@@ -16,6 +16,12 @@ from keras.preprocessing.image import img_to_array, load_img
 from PIL import ImageFile                           
 ImageFile.LOAD_TRUNCATED_IMAGES = True 
 from train import train
+import argparse
+
+
+
+parser = argparse.ArgumentParser()
+parser.parse_args()
 
 model, test_tensors, test_targets = train()
 
@@ -55,14 +61,16 @@ def trial_prediction(img_path):
     return output
 
 #%% run this only
-out = trial_prediction('trial/ka.jpg')
+parser.add_argument("-i", "--image_location", 
+                    help = "give_image_location to predict",
+                    default = 'trial/ka.jpg', type = str, 
+                    required = True)
+
+args = parser.parse_args()
+
+out = trial_prediction(args.image_location)
 print(out)
 
-
-# ### Visualizations and Error Analysis
-# This may give you some insight into why the network is misclassifying certain objects.
-
-# In[64]:
 
 
 from sklearn.metrics import confusion_matrix
