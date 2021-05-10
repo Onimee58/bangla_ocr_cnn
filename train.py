@@ -182,7 +182,7 @@ hf.close()
 
 from keras.callbacks import ModelCheckpoint  
 epochs = 50
-batch_size = 32
+batch_size = 128
 
 checkpointer = ModelCheckpoint(filepath='saved_models/weights.best.from_deepcnnwithDO.hdf5', 
                                verbose=1, save_best_only=True)
@@ -222,7 +222,7 @@ datagen_valid.fit(valid_tensors)
 from keras.callbacks import ModelCheckpoint   
 
 batch_size = 128
-epochs = 30
+epochs = 60
 
 # train the model
 checkpointer = ModelCheckpoint(filepath='saved_models/weights.best.with_augmentation_new.hdf5', verbose=1, 
