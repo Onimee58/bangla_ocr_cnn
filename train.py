@@ -45,7 +45,7 @@ print('There are %d training alphabet images.' % len(train_files))
 print('There are %d test alphabet images.'% len(test_files))
 
 
-
+#%%
 
 # Function to display the distribution of data in the training and test sets by alphabet classes
 def plot_dist(target_set):
@@ -166,8 +166,7 @@ print(test_tensors.shape[0], 'test samples')
 
 
 
-
-#%% Compile the model
+#%% Compile the model and train
 
 from cnn_model import cnn_model
 model = cnn_model(train_tensors)
@@ -182,7 +181,7 @@ hf.close()
 
 from keras.callbacks import ModelCheckpoint  
 epochs = 50
-batch_size = 128
+batch_size = 32
 
 checkpointer = ModelCheckpoint(filepath='saved_models/weights.best.from_deepcnnwithDO.hdf5', 
                                verbose=1, save_best_only=True)
@@ -236,8 +235,43 @@ model.fit_generator(datagen_train.flow(train_tensors, train_targets, batch_size=
                     validation_data=datagen_valid.flow(valid_tensors, valid_targets, batch_size=batch_size),
                     validation_steps=valid_tensors.shape[0] // batch_size)
     
-#%% evaluation matrics
-model.load_weights('saved_models/weights.best.with_augmentation_new.hdf5')
+#%% evaluation and confusion matrics
+from itertools import product
+def plot_confusion_matrix(cm, class_names):
+    """
+    Returns a matplotlib figure containing the plotted confusion matrix.
+    
+    Args:
+       cm (array, shape = [n, n]): a confusion matrix of integer classes
+       class_names (array, shape = [n]): String names of the integer classes
+    """
+    
+    figure = plt.figure(figsize=(50, 50))
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title("Confusion matrix")
+    plt.colorbar()
+    tick_marks = np.arange(len(class_names))
+    plt.xticks(tick_marks, class_names, rotation=45)
+    plt.yticks(tick_marks, class_names)
+    
+    # Normalize the confusion matrix.
+    cm = np.around(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], decimals=2)
+    
+    # Use white text if squares are dark; otherwise black.
+    threshold = cm.max() / 2.
+    
+    for i, j in product(range(cm.shape[0]), range(cm.shape[1])):
+        color = "white" if cm[i, j] > threshold else "black"
+        plt.text(j, i, cm[i, j], horizontalalignment="center", color=color)
+        
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    return figure
+
+from keras.models import load_model
+
+model = load_model('saved_models/weights.best.with_augmentation_new.hdf5')
 # get index of predicted alphabetnfor each image in test set
 alphabet_predictions = [np.argmax(model.predict(np.expand_dims(tensor, axis=0))) for tensor in test_tensors]
 
@@ -247,4 +281,8 @@ f1_accuracy = 100* metrics.f1_score(y_true,alphabet_predictions, average = 'micr
 print('Test F1 accuracy: %.4f%%' % f1_accuracy)
 
 from sklearn.metrics import confusion_matrix
-confusion_matrix(y_true, alphabet_predictions)
+cm = confusion_matrix(y_true, alphabet_predictions)
+
+plot_confusion_matrix(cm, class_names = [i for i in range(50)] )  
+plt.show()  
+
