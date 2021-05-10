@@ -69,4 +69,4 @@ def path_to_tensor(img_path):
 
 
 if __name__ == "__main__":
-    aug_model(path_to_tensor('trial/ka.jpg'))
+    cnn_model(path_to_tensor('trial/ka.jpg'))
