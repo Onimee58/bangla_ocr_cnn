@@ -166,54 +166,6 @@ print(test_tensors.shape[0], 'test samples')
 
 
 
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D
-from keras.layers import Dropout, Flatten, Dense
-
-
-# Initialising the CNN
-model = Sequential()
-
-# First Convolution Layer with Pooling
-model.add(Conv2D(filters=16, kernel_size=2, padding='valid', activation='relu', input_shape=(train_tensors.shape[1:])))
-model.add(MaxPooling2D(pool_size=2))
-model.add(Dropout(0.2))
-
-# Adding a second convolutional layer with Pooling
-model.add(Conv2D(filters=32, kernel_size=2, padding='valid', activation='relu'))
-model.add(MaxPooling2D(pool_size =2))
-model.add(Dropout(0.2))
-
-# Adding a third convolutional layer with Pooling
-model.add(Conv2D(filters=64, kernel_size=2, padding='valid', activation='relu'))
-model.add(MaxPooling2D(pool_size =2))
-model.add(Dropout(0.2))
-
-# Adding a fourth convolutional layer with Pooling
-model.add(Conv2D(filters=128, kernel_size=2, padding='valid', activation='relu'))
-model.add(MaxPooling2D(pool_size =2))
-model.add(Dropout(0.2))
-
-
-# Adding a fifth convolutional layer with Pooling
-model.add(Conv2D(filters=256, kernel_size=2, padding='valid', activation='relu'))
-model.add(MaxPooling2D(pool_size =2))
-model.add(Dropout(0.2))
-
-
-
-#model.add(GlobalAveragePooling2D())
-model.add(Flatten())
-
-# Full connection Dense Layers
-model.add(Dense(256, activation='relu'))
-#model.add(Dropout(0.2))
-model.add(Dense(512, activation='relu'))
-model.add(Dropout(0.2))
-model.add(Dense(50, activation = 'softmax'))
-
-model.summary()
-
 
 #%% Compile the model
 
