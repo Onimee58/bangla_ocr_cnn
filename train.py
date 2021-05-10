@@ -83,8 +83,6 @@ def train():
     #                  color="green")
     
     
-    # In[23]:
-    
     
     # #View random characters in folders
     # sample_files = []
@@ -101,8 +99,6 @@ def train():
     #     ax.set_title("{}".format(sample_files[i][29:-4]),
     #                  color="green")
     
-    
-    # In[24]:
     
     
     # Splitting the Training set into the Training set and Validation set
@@ -124,9 +120,7 @@ def train():
     # raw_valid_targets = np.array(raw_valid_targets)
     # print('Distribution of the validation data in the dataset')  
     # plot_dist(Counter(raw_valid_targets))
-    
-    
-    # In[28]:
+
     
     
     # fig = plt.figure(figsize=(20,5))
@@ -138,8 +132,6 @@ def train():
     # ### Prepare the Training, Validation and Test Datasets
     # 
     # In the code cell below, we prepare the training, validation and test datasets for CNN in Keras.
-    
-    # In[29]:
     
     
     ### Prepare the Training, Validation and Test Datasets
@@ -231,7 +223,7 @@ def train():
     
     
     from keras.callbacks import ModelCheckpoint  
-    epochs = 100
+    epochs = 60
     batch_size = 32
     
     checkpointer = ModelCheckpoint(filepath='saved_models/weights.best.from_deepcnnwithDO.hdf5', 
@@ -272,7 +264,7 @@ def train():
     from keras.callbacks import ModelCheckpoint   
     
     batch_size = 128
-    epochs = 50
+    epochs = 30
     
     # train the model
     checkpointer = ModelCheckpoint(filepath='saved_models/weights.best.with_augmentation_new.hdf5', verbose=1, 
