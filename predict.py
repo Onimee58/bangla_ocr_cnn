@@ -13,24 +13,11 @@ from collections import Counter
 import matplotlib.pyplot as plt
 from keras.preprocessing import image                  
 from keras.preprocessing.image import img_to_array, load_img
+from keras.models import load_model
 from PIL import ImageFile                           
 ImageFile.LOAD_TRUNCATED_IMAGES = True 
-from train import train
 
-
-model, test_tensors, test_targets = train()
-
-model.load_weights('saved_models/weights.best.with_augmentation_new.hdf5')
-#model.load_weights('saved_models/weights.best.with_augmentation.hdf5')
-# get index of predicted alphabetnfor each image in test set
-alphabet_predictions = [np.argmax(model.predict(np.expand_dims(tensor, axis=0))) for tensor in test_tensors]
-
-from sklearn import metrics
-y_true = [np.argmax(y_test) for y_test in test_targets]
-f1_accuracy = 100* metrics.f1_score(y_true,alphabet_predictions, average = 'micro')
-print('Test F1 accuracy: %.4f%%' % f1_accuracy)
-from sklearn.metrics import confusion_matrix
-confusion_matrix(y_true, alphabet_predictions)
+model = load_model('saved_models/weights.best.with_augmentation_new.hdf5')
 
 def trial_prediction(img_path):
     img = load_img(img_path, target_size=(64, 64), grayscale=True)
