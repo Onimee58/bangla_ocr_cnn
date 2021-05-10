@@ -16,12 +16,7 @@ from keras.preprocessing.image import img_to_array, load_img
 from PIL import ImageFile                           
 ImageFile.LOAD_TRUNCATED_IMAGES = True 
 from train import train
-import argparse
 
-
-
-parser = argparse.ArgumentParser()
-parser.parse_args()
 
 model, test_tensors, test_targets = train()
 
@@ -34,10 +29,8 @@ from sklearn import metrics
 y_true = [np.argmax(y_test) for y_test in test_targets]
 f1_accuracy = 100* metrics.f1_score(y_true,alphabet_predictions, average = 'micro')
 print('Test F1 accuracy: %.4f%%' % f1_accuracy)
-
-
-# In[63]:
-
+from sklearn.metrics import confusion_matrix
+confusion_matrix(y_true, alphabet_predictions)
 
 def trial_prediction(img_path):
     img = load_img(img_path, target_size=(64, 64), grayscale=True)
@@ -61,17 +54,10 @@ def trial_prediction(img_path):
     return output
 
 #%% run this only
-parser.add_argument("-i", "--image_location", 
-                    help = "give_image_location to predict",
-                    default = 'trial/ka.jpg', type = str, 
-                    required = True)
 
-args = parser.parse_args()
+print("Enter the file path for image.\nPress Ctrl+C to exit.")
 
-out = trial_prediction(args.image_location)
-print(out)
-
-
-
-from sklearn.metrics import confusion_matrix
-confusion_matrix(y_true, alphabet_predictions)
+while(True):
+    loc = input('Image path: ')
+    out = trial_prediction(loc)
+    print(out)
