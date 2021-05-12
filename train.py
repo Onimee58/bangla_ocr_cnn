@@ -265,5 +265,4 @@ from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_true, alphabet_predictions)
 
 plot_confusion_matrix(cm, class_names = [i for i in range(50)] )  
-plt.show()  
 plt.savefig('confusion_matrix', dpi=None, facecolor='r', edgecolor='b')
