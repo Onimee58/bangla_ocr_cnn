@@ -4,9 +4,6 @@ Created on Mon May 10 04:18:58 2021
 
 @author: Saif
 """
-#!/usr/bin/env python
-# coding: utf-8
-
 
 from sklearn.datasets import load_files       
 from keras.utils import np_utils
@@ -44,9 +41,6 @@ print('There are %s total alphabet images.\n' % len(np.hstack([train_files, test
 print('There are %d training alphabet images.' % len(train_files))
 print('There are %d test alphabet images.'% len(test_files))
 
-
-#%%
-
 # Function to display the distribution of data in the training and test sets by alphabet classes
 def plot_dist(target_set):
     plt.figure(figsize=(6,4))
@@ -82,10 +76,6 @@ def plot_dist(target_set):
 #     ax.set_title("{}".format(alphabets[i]),
 #                  color="green")
 
-
-# In[23]:
-
-
 # #View random characters in folders
 # sample_files = []
 # folder = 'BasicFinalDatabase/Train/173/'
@@ -102,10 +92,7 @@ def plot_dist(target_set):
 #                  color="green")
 
 
-# In[24]:
-
-
-# Splitting the Training set into the Training set and Validation set
+#%% Splitting the Training set into the Training set and Validation set
 from sklearn.model_selection import train_test_split
 train_files, valid_files, train_targets, valid_targets = train_test_split(train_files, train_targets, test_size = 0.2, random_state = 0, stratify = raw_train_targets)
 
@@ -125,19 +112,13 @@ print('There are %d test alphabet images.\n'% len(test_files))
 # print('Distribution of the validation data in the dataset')  
 # plot_dist(Counter(raw_valid_targets))
 
-
-# In[28]:
-
-
 # fig = plt.figure(figsize=(20,5))
 # for i in range(36):
 #     ax = fig.add_subplot(3, 12, i + 1, xticks=[], yticks=[])
 #     ax.imshow(np.squeeze(load_img(valid_files[i], target_size=(64,64), grayscale=True)), cmap = 'gray')
 
 
-# ### Prepare the Training, Validation and Test Datasets
-# 
-# In the code cell below, we prepare the training, validation and test datasets for CNN in Keras.
+# We prepare the training, validation and test datasets for CNN in Keras.
 
 
 ### Prepare the Training, Validation and Test Datasets
@@ -172,7 +153,7 @@ from cnn_model import cnn_model
 model = cnn_model(train_tensors)
 model.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
 
-
+# generate an empty weight
 import h5py
 hf = h5py.File('saved_models/weights.best.from_deepcnnwithDO.hdf5', 'w')
 hf.close()
@@ -248,7 +229,7 @@ def plot_confusion_matrix(cm, class_names):
     
     figure = plt.figure(figsize=(100, 100))
     plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
-    plt.title("Confusion matrix")
+    plt.title("Confusion matrix", fontsize = 200)
     plt.colorbar()
     tick_marks = np.arange(len(class_names))
     plt.xticks(tick_marks, class_names, rotation=45)
@@ -265,8 +246,8 @@ def plot_confusion_matrix(cm, class_names):
         plt.text(j, i, cm[i, j], horizontalalignment="center", color=color)
         
     plt.tight_layout()
-    plt.ylabel('True label')
-    plt.xlabel('Predicted label')
+    plt.ylabel('True alphabet Index', fontsize = 200)
+    plt.xlabel('Predicted alphabet index', fontsize = 200)
     return figure
 
 from keras.models import load_model
@@ -285,4 +266,4 @@ cm = confusion_matrix(y_true, alphabet_predictions)
 
 plot_confusion_matrix(cm, class_names = [i for i in range(50)] )  
 plt.show()  
-
+plt.savefig('confusion_matrix', dpi=None, facecolor='r', edgecolor='b')
