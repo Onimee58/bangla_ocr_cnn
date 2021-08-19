@@ -9,3 +9,6 @@ recognizing bangla characters with custom made cnn
 5. insert image location when asked in command prompt.
 6. If you want to train your own model run train.py with your suitable parameters.
 
+## Confusion Matrix
+![image](https://github.com/Onimee58/bangla_ocr_cnn/blob/main/confusion_matrix.png)
+
